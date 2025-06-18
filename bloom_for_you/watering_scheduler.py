@@ -11,8 +11,8 @@ from bloom_for_you.function_modules.tts import tts
 
 from bloom_for_you.function_modules import robot
 
-from bloom_for_you.function_modules.realsense import ImgNode
-from bloom_for_you.function_modules.yolo import YoloModel
+from bloom_for_you.function_modules.realsense_ import ImgNode
+from bloom_for_you.function_modules import yolo
 
 from bloom_for_you_interfaces.msg import FlowerInfo
 
@@ -25,12 +25,16 @@ package_path = os.path.abspath(os.path.join(current_dir, ".."))
 CMD_START_WATERING = 30
 CMD_END_WATERING = 31
 
-POS_TABLE = [280.28, 63.48, 187.74, 20.24, -179.96, 19.97]
+POS_TABLE = [280.28, 63.48, 250.00, 20.24, -179.96, 19.97]
 POS_ZONE1 = [108.99, -461.86, 197.16, 104.45, -178.30, -168.57]
 POS_ZONE2 = [-114.80, -460.45, 197.16, 69.36, 180.00, 163.36]
 POS_PLANT = [POS_TABLE, POS_ZONE1, POS_ZONE2]
 
-POS_WATER = [342.57,-395.48,196.54,117.00,179.98,129.04]
+POS_WATER = [600.00,-328.98,134.89,160.31,180.00,160.02]
+
+POT = "화분"
+BABY = ["해바라기새싹", "튤립새싹"]
+FLOWER = ["해바라기", "튤립"]
 
 
 class FlowerWatering(Node):
@@ -40,6 +44,7 @@ class FlowerWatering(Node):
         self.growth_pub = self.create_publisher(FlowerInfo, 'flower_info', 10)
         self.img_node = ImgNode()
         self.robot = robot.Robot()
+        self.yolo = yolo.Yolo()
 
 
     def water_the_flower(self, msg):
@@ -69,45 +74,48 @@ class FlowerWatering(Node):
         
     def _get_flower(self):
         self.get_logger().info("화분 가져오는 중...")
-
-        self.robot.move_home()
+        
+        self.robot.move(POS_PLANT[0])
 
         self.robot.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
         self.robot.open_grip()
-        self.robot.move_relative([0,0,-20,0,0,0])
+        time.sleep(1.0)
+        self.robot.move_relative([0,0,-200,0,0,0])
+        time.sleep(1.0)
         self.robot.close_grip()
-        self.robot.move_relative([0,0, 20,0,0,0])
+        time.sleep(1.0)
+        self.robot.move(POS_PLANT[self.zone_number])
 
         self.robot.move(POS_PLANT[0])
-        self.robot.move_relative([0,0,-20,0,0,0])
-        self.robot.force_on_z(-10)
-        self.robot.check_touch(max=10)
-        self.robot.force_off()
+        # self.robot.move_relative([0,0,-20,0,0,0])
+        self.robot.force_on_z(-40)
+        self.robot.check_touch(max=15)
 
         self.robot.open_grip()
-        self.robot.move_relative([0,0,20,0,0,0])
+        self.robot.move(POS_PLANT[0])
         self.robot.close_grip()
-        self.robot.move_home()
 
         self.get_logger().info("화분 픽업 완료")
         
 
     def _water(self):
         self.get_logger().info("물 주기 실행")
-        self.robot.move_home()
+        self.robot.move(POS_TABLE)
+        time.sleep(1.0)
         self.robot.move(POS_WATER)
         self.robot.open_grip()
-        self.robot.move_relative([0,0,-130,0,0,0])
+        self.robot.move_relative([0,0,-30,0,0,0])
         self.robot.close_grip()
         self.robot.move(POS_WATER)
 
-        
         self.robot.move(POS_PLANT[0])
         
         self.get_logger().info("물 주기 완료")
 
 
     def _check_growth(self):
+        # 욜로로 체크 했다 치고
         self._take_pictures()
 
     def _take_pictures(self):
@@ -136,7 +144,6 @@ class FlowerWatering(Node):
         msg.flower_meaning = self.flower_meaning
         msg.growth_duration_days = self.growth_duration_days
         msg.watering_cycle = self.watering_cycle
-    
         
         grow_state = 1
         self.growth_state=grow_state

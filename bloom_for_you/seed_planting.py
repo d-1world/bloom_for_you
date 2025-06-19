@@ -35,7 +35,7 @@ class SeedPlanting(Node):
         self.yolo_instance = yolo.Yolo()
         self.gripper_instance = RG(GRIPPER_NAME, TOOLCHARGER_IP, TOOLCHARGER_PORT)
 
-    def cmd_callback(self, msg):
+    def cmd_callback(self, msg):     
         self.command = msg.command
         if self.command != CMD_SEED:
             return

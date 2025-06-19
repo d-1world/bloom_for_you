@@ -45,6 +45,8 @@ setup(
             'juntae_pub = bloom_for_you.juntae_pub:main',
             
             'speech_to_command = bloom_for_you.speech_to_command:main',
+            'make_letter_card = bloom_for_you.make_letter_card:main',
+            'voice_memory = bloom_for_you.voice_memory:main',
 
             # set code by wsh - "ros2 run before start your code"
             'set_yolo_model = bloom_for_you.set_yolo_model:main',

@@ -39,8 +39,8 @@ class ScenarioManager(Node):
         self.LISTEN_COMMAND_STATE = 0
         
         self.flower_info_list = []
-        # flower_temp = Flower(id = 1234, zone_number=1)
-        # self.flower_info_list.append(flower_temp)
+        flower_temp = Flower(id = 1234, zone_number=1)
+        self.flower_info_list.append(flower_temp)
 
         self.scenario_zone_number = [0]
 

@@ -18,6 +18,7 @@ POS_SEED3 = [642.62,-228.98,134.89,160.31,180.00,160.02]    # 씨앗3 위치(해
 POS_TABLE = [280.28, 63.48, 187.74, 20.24, -179.96, 19.97]      # 화분 위치
 POS_ZONE1 = [108.99, -461.86, 197.16, 104.45, -178.30, -168.57] # 플랜트 존 위치1(왼쪽)
 POS_ZONE2 = [-114.80, -460.45, 197.16, 69.36, 180.00, 163.36]   # 플랜트 존 위치2(오른쪽)
+POS_TABLE2 = [324.59, 8.09, 330.00, 73.11, 180.00, -13.77]
 
 POS_PLANT = [POS_TABLE, POS_ZONE1, POS_ZONE2, POS_SEED1, POS_SEED2, POS_SEED3]
 
@@ -52,11 +53,40 @@ class SeedPlanting(Node):
         tts("씨앗 심기를 시작합니다")
         self.get_logger().info("씨앗 심기를 시작합니다.")
 
+        self.pickup_zone()
         self.move_seed()    # 씨앗 위치로 이동
         self.pickup_seed()  # 씨앗 집기
         self.plant_seed()   # 씨앗 심기
         self.move_zone()    # 화분 이동
         self.end_planting()   # 종료 알림
+
+    def pickup_zone(self):
+        self.get_logger().info('화분을 가져오는 중...')
+        tts("화분을 가져오는 중...")
+        self.robot_instance.move_relative([0.0, 0.0, 50.0, 0.0, 0.0, 0.0])  # 살짝 위로 올라가기
+        time.sleep(1.0)
+        self.robot_instance.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
+        self.robot_instance.open_grip()
+        time.sleep(1.0)
+        self.robot_instance.move_relative([0.0, 0.0, -300.0, 0.0, 0.0, 0.0])
+        time.sleep(1.0)
+        self.robot_instance.close_grip()
+        time.sleep(1.0)
+        self.robot_instance.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
+        self.robot_instance.move_relative([0.0, 0.0, 120.0, 0.0, 0.0, 0.0])
+
+        self.robot_instance.move(POS_TABLE2)
+        time.sleep(1.0)
+        self.robot_instance.move_relative([0.0, 0.0, -200.0, 0.0, 0.0, 0.0])
+        time.sleep(1.0)
+        self.robot_instance.open_grip()
+        time.sleep(1.0)
+        self.robot_instance.move(POS_TABLE2)
+        self.robot_instance.close_grip()
+
+        self.get_logger().info('화분 픽업 완료')
 
 
     def move_seed(self):
@@ -90,7 +120,7 @@ class SeedPlanting(Node):
             target = "씨앗"
             x = 0
             y = 10
-            z = -8
+            z = -9
             self.yolo_instance.grip_target(target, x, y, z)
             time.sleep(7.0)
 

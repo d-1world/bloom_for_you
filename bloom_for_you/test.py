@@ -45,6 +45,7 @@ class Test(Node):
     def callback(self,request,response):
         self.get_logger().info("카드 출력 요청 수신됨")
         response.success = True
+        self.get_logger().info("응답 리턴 완료됨")
         return response
 
 def main():

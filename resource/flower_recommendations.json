@@ -60,7 +60,7 @@
                 "flower_name": "해바라기",
                 "flower_meaning": "새출발, 희망",
                 "growth_duration_days": 30,
-                "watering_cycle": 4,
+                "watering_cycle": 1000,
                 "image_url": "/home/rokey/ros2_ws/src/bloom_for_you/resource/flowers_img/sunflower.jpg"
             },
             {
@@ -182,7 +182,7 @@
                 "flower_name": "튤립",
                 "flower_meaning": "환희, 희망",
                 "growth_duration_days": 90,
-                "watering_cycle": 5,
+                "watering_cycle": 1000,
                 "image_url": "/home/rokey/ros2_ws/src/bloom_for_you/resource/flowers_img/tulip.jpeg"
             },
             {

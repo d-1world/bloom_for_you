@@ -11,26 +11,32 @@ from bloom_for_you.function_modules.tts import tts
 
 from bloom_for_you.function_modules import robot
 
-from bloom_for_you.function_modules.realsense import ImgNode
-from bloom_for_you.function_modules.yolo import YoloModel
+from bloom_for_you.function_modules.realsense_ import ImgNode
+# from bloom_for_you.function_modules import yolo
 
 from bloom_for_you_interfaces.msg import FlowerInfo
 
 ########### FlowerWatering ############
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-# package_path = "/home/rokey/r2_ws/src/bloom_for_you"
-package_path = os.path.abspath(os.path.join(current_dir, ".."))
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+package_path = "/home/rokey/ros2_ws/src/bloom_for_you"
+# package_path = os.path.abspath(os.path.join(current_dir, ".."))
 
 CMD_START_WATERING = 30
 CMD_END_WATERING = 31
 
-POS_TABLE = [280.28, 63.48, 187.74, 20.24, -179.96, 19.97]
+POS_TABLE = [280.28, 63.48, 250.00, 20.24, -179.96, 19.97]
+POS_TABLE2 = [324.59, 8.09, 330.00, 73.11, 180.00, -13.77]
 POS_ZONE1 = [108.99, -461.86, 197.16, 104.45, -178.30, -168.57]
 POS_ZONE2 = [-114.80, -460.45, 197.16, 69.36, 180.00, 163.36]
 POS_PLANT = [POS_TABLE, POS_ZONE1, POS_ZONE2]
 
-POS_WATER = [342.57,-395.48,196.54,117.00,179.98,129.04]
+
+POS_WATER = [600.00,-281.00,170.89,160.31,180.00,160.02]
+
+POT = "화분"
+BABY = ["해바라기새싹", "튤립새싹"]
+FLOWER = ["해바라기", "튤립"]
 
 
 class FlowerWatering(Node):
@@ -40,6 +46,10 @@ class FlowerWatering(Node):
         self.growth_pub = self.create_publisher(FlowerInfo, 'flower_info', 10)
         self.img_node = ImgNode()
         self.robot = robot.Robot()
+        # self.yolo = yolo.Yolo()
+        self.robot.open_grip()
+        self.robot.move_home()
+        self.robot.close_grip()
 
 
     def water_the_flower(self, msg):
@@ -62,61 +72,110 @@ class FlowerWatering(Node):
         self._get_flower()
         self._water()
         self._check_growth()
+        time.sleep(3.0)
+        self._get_back_flower()
         
 
         tts("물 주기 노드를 완료하였습니다.")
         self.get_logger().info("물 주기 노드 완료")
         
     def _get_flower(self):
-        self.get_logger().info("화분 가져오는 중...")
-
-        self.robot.move_home()
+    #     self._take_pictures()
 
         self.robot.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
         self.robot.open_grip()
-        self.robot.move_relative([0,0,-20,0,0,0])
+        time.sleep(1.0)
+        self.robot.move_relative([0,0,-300,0,0,0])
+        time.sleep(1.0)
         self.robot.close_grip()
-        self.robot.move_relative([0,0, 20,0,0,0])
-
+        time.sleep(1.0)
+        self.robot.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
+        # self.robot.move_relative([0,0,120,0,0,0])
         self.robot.move(POS_PLANT[0])
-        self.robot.move_relative([0,0,-20,0,0,0])
-        self.robot.force_on_z(-10)
-        self.robot.check_touch(max=10)
-        self.robot.force_off()
-
+        time.sleep(1.0)
+        # self.robot.move_relative([0,0,-20,0,0,0])
+        self.robot.move_relative([0,0,-150,0,0,0])
+        time.sleep(1.0)
+        # self.robot.force_on_z(-10)
+        # time.sleep(1.0)
+        # self.robot.check_touch(min=5, max=30)
+        # time.sleep(1.0)
         self.robot.open_grip()
-        self.robot.move_relative([0,0,20,0,0,0])
+        time.sleep(1.0)
+        self.robot.move(POS_TABLE2)
         self.robot.close_grip()
-        self.robot.move_home()
 
         self.get_logger().info("화분 픽업 완료")
         
 
     def _water(self):
         self.get_logger().info("물 주기 실행")
-        self.robot.move_home()
+        # self.robot.move(POS_TABLE2)
+        time.sleep(1.0)
         self.robot.move(POS_WATER)
-        self.robot.open_grip()
-        self.robot.move_relative([0,0,-130,0,0,0])
+        self.robot.open_grip()  
+        time.sleep(1.0)
+        self.robot.move_relative([0,0,-70,0,0,0])
         self.robot.close_grip()
-        self.robot.move(POS_WATER)
+        time.sleep(1.0)
+        # self.robot.move(POS_WATER)
+        self.robot.move_relative([-100,0,100,0,0,0])
 
-        
+        # self.robot.move(POS_TABLE2)
+        self.robot.move([324.59, -50.00, 240.0, 73.11, 180.00, -13.77])
+        time.sleep(1.0)
+        self.robot.move([324.59, -80.00, 200.0, 90.00, -133.67, 3.12])
+        time.sleep(1.0)
+        self.robot.move([324.59, -50.00, 240.0, 73.11, 180.00, -13.77])
+        time.sleep(1.0)
+        self.robot.move_relative([100,-200,0,0,0,0])
+        time.sleep(1.0)
+        self.robot.move(POS_WATER)
+        time.sleep(1.0)
+        self.robot.force_on_z(-10)
+        self.robot.check_touch(max=10)
+        self.robot.force_off()
+        time.sleep(1.0)
+
+        self.robot.open_grip()
+        time.sleep(1.0)
+        self.robot.move_relative([-100,0,100,0,0,0])
+        time.sleep(1.0)
+        self.robot.close_grip()
+        time.sleep(1.0)
+
         self.robot.move(POS_PLANT[0])
-        
+        self.robot.move_relative([60,-80,0,0,0,0])
+        time.sleep(1.0)
+
+
         self.get_logger().info("물 주기 완료")
 
 
     def _check_growth(self):
+        # 욜로로 체크 했다 치고
         self._take_pictures()
 
     def _take_pictures(self):
         rclpy.spin_once(self.img_node)
+
+        start_time = time.time()
+        timeout_sec = 5
+
+        while self.img_node.get_color_frame() is None:
+            rclpy.spin_once(self.img_node, timeout_sec=0.1)
+            if time.time() - start_time > timeout_sec:
+                self.get_logger().warn("이미지 수신 대기 시간 초과")
+                return
+
         color_image = self.img_node.get_color_frame()
         if color_image is not None:
-            timestamp = datetime.today().strftime('%Y%m%d')
-            filename = f"flower_{self.id}_{timestamp}.jpg"
-            save_dir= os.path.join(package_path, "resource", "pictures", str(self.id))
+            # timestamp = datetime.today().strftime('%Y%m%d')
+            filename = f"{self.id}.jpg"
+            # save_dir= os.path.join(package_path, "resource", "pictures", str(self.id))
+            save_dir= os.path.join(package_path, "resource", "pictures")
             os.makedirs(save_dir, exist_ok=True)
 
             filepath = os.path.join(save_dir, filename)
@@ -128,6 +187,32 @@ class FlowerWatering(Node):
 
         self._return_flower()
 
+    def _get_back_flower(self):
+        
+        self.robot.move(POS_PLANT[0])
+        time.sleep(1.0)
+        self.robot.open_grip()
+        time.sleep(1.0)
+        self.robot.move_relative([0,0,-150,0,0,0])
+        time.sleep(1.0)
+        self.robot.close_grip()
+        time.sleep(1.0)
+        self.robot.move(POS_PLANT[0])
+        time.sleep(1.0)
+        self.robot.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
+        self.robot.move_relative([0,0,-300,0,0,0])
+        time.sleep(1.0)
+        self.robot.open_grip()
+        time.sleep(1.0)
+        self.robot.move(POS_PLANT[self.zone_number])
+        time.sleep(1.0)
+        self.robot.close_grip()
+        time.sleep(1.0)
+        self.robot.move(POS_PLANT[0])
+        time.sleep(1.0)
+
+
     def _return_flower(self):
         msg = FlowerInfo()
         msg.id = self.id
@@ -136,13 +221,13 @@ class FlowerWatering(Node):
         msg.flower_meaning = self.flower_meaning
         msg.growth_duration_days = self.growth_duration_days
         msg.watering_cycle = self.watering_cycle
-    
         
-        grow_state = 1
+        grow_state = 2
         self.growth_state=grow_state
         
         msg.growth_state = self.growth_state
         self.growth_pub.publish(msg)
+        
 
 
 
@@ -150,7 +235,7 @@ def main(args=None):
     # rclpy.init(args=args)
     node = FlowerWatering()
     try:
-        rclpy.spin_once(node)
+        rclpy.spin(node)
     finally:
         node.destroy_node()
         rclpy.shutdown()

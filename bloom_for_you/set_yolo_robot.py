@@ -18,7 +18,7 @@ from ament_index_python.packages import get_package_share_directory
 
 package_path = get_package_share_directory("bloom_for_you")
 
-MIN_DEPTH = 3.0
+MIN_DEPTH = -1000.0
 
 class SetYoloRobot(Node):
     def __init__(self):

@@ -11,6 +11,9 @@
       background-size: cover;
     }
     .top-right { position:absolute; top:20px; right:30px; }
+    .content-flex { display:flex; align-items:flex-start; justify-content:center; }
+    .img-box { margin-right:40px; min-width:200px; }
+    .img-box img { width:800px; border-radius:35px; box-shadow:0 2px 12px #bbb; }
     .center-content {
       display:flex; flex-direction:column; align-items:center;
       justify-content:center; min-height:100vh;
@@ -29,21 +32,31 @@
 <body>
   <div class='top-right'><a href='/'>다른 예약번호 조회</a></div>
   <div class='center-content'>
-    <h1>예약번호 1234의 메시지</h1>
-    <ul>
-      <li>[20250616_210227] 왜 여기서 안 열어줘요? 바람 많이 불어<br><audio controls src='/personal_audio/1234/20250616_210227.wav'></audio></li>
-      <li>[20250616_211330] 보고싶어<br><audio controls src='/personal_audio/1234/20250616_211330.wav'></audio></li>
-      <li>[20250616_213038] 집 가고 싶어<br><audio controls src='/personal_audio/1234/20250616_213038.wav'></audio></li>
-      <li>[20250616_213254] 그래서 앞으로 왜 무거운 게 필요해? 뭐 할까?<br><audio controls src='/personal_audio/1234/20250616_213254.wav'></audio></li>
-      <li>[20250616_213759] 물 마시고 싶다<br><audio controls src='/personal_audio/1234/20250616_213759.wav'></audio></li>
-      <li>[20250617_102546] 아침이야. 일어나.<br><audio controls src='/personal_audio/1234/20250617_102546.wav'></audio></li>
-      <li>[20250617_102812] 쉬는 시간이에요 쉬는 시간<br><audio controls src='/personal_audio/1234/20250617_102812.wav'></audio></li>
-      <li>[20250617_105926] 뭐가 문제니?<br><audio controls src='/personal_audio/1234/20250617_105926.wav'></audio></li>
-      <li>[20250617_111209] 이건 form-data로 보낸 오디오<br><audio controls src='/personal_audio/1234/20250617_111209.wav'></audio></li>
-      <li>[20250617_111307] 이건 form-data로 보낸 오디오<br><audio controls src='/personal_audio/1234/20250617_111307.wav'></audio></li>
-      <li>[20250617_113110] 배고파<br><audio controls src='/personal_audio/1234/20250617_113110.wav'></audio></li>
-      <li>[20250617_210423] 밥 맛있었어<br><audio controls src='/personal_audio/1234/20250617_210423.wav'></audio></li>
-    </ul>
+    <div class='content-flex'>
+      <div class='img-box'><img src='/pictures/1234.jpg' alt='예약번호 이미지'/></div>
+      <div>
+        <h1>예약번호 1234의 메시지</h1>
+        <ul>
+          <li>[20250616_210227] 왜 여기서 안 열어줘요? 바람 많이 불어<br><audio controls src='/personal_audio/1234/20250616_210227.wav'></audio></li>
+          <li>[20250616_211330] 보고싶어<br><audio controls src='/personal_audio/1234/20250616_211330.wav'></audio></li>
+          <li>[20250616_213038] 집 가고 싶어<br><audio controls src='/personal_audio/1234/20250616_213038.wav'></audio></li>
+          <li>[20250616_213254] 그래서 앞으로 왜 무거운 게 필요해? 뭐 할까?<br><audio controls src='/personal_audio/1234/20250616_213254.wav'></audio></li>
+          <li>[20250616_213759] 물 마시고 싶다<br><audio controls src='/personal_audio/1234/20250616_213759.wav'></audio></li>
+          <li>[20250617_102546] 아침이야. 일어나.<br><audio controls src='/personal_audio/1234/20250617_102546.wav'></audio></li>
+          <li>[20250617_102812] 쉬는 시간이에요 쉬는 시간<br><audio controls src='/personal_audio/1234/20250617_102812.wav'></audio></li>
+          <li>[20250617_105926] 뭐가 문제니?<br><audio controls src='/personal_audio/1234/20250617_105926.wav'></audio></li>
+          <li>[20250617_111209] 이건 form-data로 보낸 오디오<br><audio controls src='/personal_audio/1234/20250617_111209.wav'></audio></li>
+          <li>[20250617_111307] 이건 form-data로 보낸 오디오<br><audio controls src='/personal_audio/1234/20250617_111307.wav'></audio></li>
+          <li>[20250617_113110] 배고파<br><audio controls src='/personal_audio/1234/20250617_113110.wav'></audio></li>
+          <li>[20250617_210423] 밥 맛있었어<br><audio controls src='/personal_audio/1234/20250617_210423.wav'></audio></li>
+          <li>[20250618_110256] 밥 먹었어?<br><audio controls src='/personal_audio/1234/20250618_110256.wav'></audio></li>
+          <li>[20250618_174529] 이게 안 돼가지고... 손가락을 뺐어요? 뺐어요<br><audio controls src='/personal_audio/1234/20250618_174529.wav'></audio></li>
+          <li>[20250618_175321] 2편에서 매치에 드러나요!<br><audio controls src='/personal_audio/1234/20250618_175321.wav'></audio></li>
+          <li>[20250618_183109] 맛있어 이렇게 빨리 떠나셔서<br><audio controls src='/personal_audio/1234/20250618_183109.wav'></audio></li>
+          <li>[20250619_134632] 옷 가져왔어?<br><audio controls src='/personal_audio/1234/20250619_134632.wav'></audio></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </body>
 </html>

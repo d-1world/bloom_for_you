@@ -142,7 +142,7 @@ class CardServiceServer(Node):
         self.get_logger().info("카드 생성 서비스(cardsrv) 준비 완료")
 
     def callback(self, request, response):
-        res_num = request.res_num
+        res_num = request.flowerinfo.id   # ← 여기만 수정!
         self.get_logger().info(f"카드 생성 요청: 예약번호={res_num}")
         try:
             success = make_letter_card(

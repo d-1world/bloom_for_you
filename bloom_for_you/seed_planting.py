@@ -55,8 +55,8 @@ class SeedPlanting(Node):
         self.move_seed()    # 씨앗 위치로 이동
         self.pickup_seed()  # 씨앗 집기
         self.plant_seed()   # 씨앗 심기
-        # self.move_zone()    # 화분 이동
-        # self.end_planting()   # 종료 알림
+        self.move_zone()    # 화분 이동
+        self.end_planting()   # 종료 알림
 
 
     def move_seed(self):

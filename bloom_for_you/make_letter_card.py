@@ -1,3 +1,7 @@
+#python3 make_letter_card.py 1234
+#xdg-open /home/kim/ros2_ws/src/bloom_for_you/letter_card_1234.html
+#xdg-open "http://localhost:5000/messages?res_num="
+
 import os
 import numpy as np
 import openai
